@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Dynatable</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            #contentTable {
+                border-collapse: collapse;
+                border-spacing: 0px;
+            }
+            #columnHeaders, #rowHeaders {
+                cursor: default;
+                -webkit-user-select: none;
+                position: relative;
+            }
+            #rowHeaders > div, #columnHeaders > div, #corner {
+                border-right: 1px solid grey;
+                border-bottom: 1px solid grey;
+            }
+            .header-elem {
+                text-align: center;
+            }
+            .column-sel, .column-nosel {
+                display: inline-block;
+                position: absolute;
+                height: 100%;
+            }
+            .header:hover {
+                background-color: rgba(255,100,100,0.8)
+            }
+            #contentTable td {
+                vertical-align: top;
+            }
+            .column-sel, .row-sel {
+                color: #217346;
+                font-weight: bold;
+                background-color: rgba(255,255,0,0.3)
+            }
+            #sheetContent {
+                position: relative;
+            }
+            #sheetColumns, #sheetRows {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: inherit;
+                height: inherit;
+            }
+            .sheetRow {
+                position: absolute;
+                width: inherit;
+                border-bottom: 1px solid grey;
+            }
+            .sheetColumn {
+                position: absolute;
+                height: inherit;
+                border-right: 1px solid grey;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <div id="contentArea">
+                <table id="contentTable">
+                    <tbody>
+                        <tr id="header">
+                            <td>
+                                <div id="corner" style="width: 49px; height: 1.45em;"></div>
+                            </td>
+                            <td id="headers">
+                                <div id="columnHeaders" style="width:384px; height: 1.45em">
+                                    <div class="header column-nosel" style="width:63px; left: 0px">
+                                        <div class="header-elem">A</div>
+                                    </div>
+                                    <div class="header column-nosel" style="width:63px; left: 64px">
+                                        <div class="header-elem">B</div>
+                                    </div>
+                                    <div class="header column-sel" style="width:63px; left: 128px">
+                                        <div class="header-elem">C</div>
+                                    </div>
+                                    <div class="header column-nosel" style="width:63px; left: 192px">
+                                        <div class="header-elem">D</div>
+                                    </div>
+                                    <div class="header column-nosel" style="width:63px; left: 256px">
+                                        <div class="header-elem">E</div>
+                                    </div>
+                                    <div class="header column-nosel" style="width:63px; left: 320px">
+                                        <div class="header-elem">F</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="grid">
+                            <td>
+                                <div id="rowHeaders" style="height: 80px; width: 50px;">
+                                    <div class="header row-nosel" style="height:19px; top: 0px">
+                                        <div class="header-elem">1</div>
+                                    </div>
+                                    <div class="header row-sel" style="height:19px; top: 20px">
+                                        <div class="header-elem">2</div>
+                                    </div>
+                                    <div class="header row-sel" style="height:19px; top: 40px">
+                                        <div class="header-elem">3</div>
+                                    </div>
+                                    <div class="header row-nosel" style="height:19px; top: 60px">
+                                        <div class="header-elem">4</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="sheetContent" style="width:384px; height: 80px;">
+                                    <div id="sheetRows">
+                                        <div class="sheetRow" style="height: 19px; top:0px"></div>
+                                        <div class="sheetRow" style="height: 19px; top:20px"></div>
+                                        <div class="sheetRow" style="height: 19px; top:40px"></div>
+                                        <div class="sheetRow" style="height: 19px; top:60px"></div>
+                                    </div>
+                                    <div id="sheetColumns">
+                                        <div class="sheetColumn" style="width: 63px; left:0px;"></div>
+                                        <div class="sheetColumn" style="width: 63px; left:64px;"></div>
+                                        <div class="sheetColumn" style="width: 63px; left:128px;"></div>
+                                        <div class="sheetColumn" style="width: 63px; left:192px;"></div>
+                                        <div class="sheetColumn" style="width: 63px; left:256px;"></div>
+                                        <div class="sheetColumn" style="width: 63px; left:320px;"></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

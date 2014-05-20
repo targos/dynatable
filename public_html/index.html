@@ -9,96 +9,351 @@ and open the template in the editor.
         <title>Dynatable</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/libs/jquery/jquery.js" type="text/javascript"></script>
         <style>
             * {
                 margin: 0;
                 padding: 0;
             }
-            #contentTable {
-                border-collapse: collapse;
-                border-spacing: 0px;
-            }
-            #columnHeaders, #rowHeaders {
-                cursor: default;
-                -webkit-user-select: none;
-                position: relative;
-            }
-            #rowHeaders > div, #columnHeaders > div, #corner {
-                border-right: 1px solid grey;
-                border-bottom: 1px solid gray;
-            }
-            .header-elem {
-                text-align: center;
-            }
-            .column-sel, .column-nosel {
-                display: inline-block;
+            #contentArea {
+                width: 800px;
+                height: 200px;
+                border: 1px solid black;
+                /* position: relative; */
+                
                 position: absolute;
+                top: 20px;
+                left: 30px;
+                background-color: rgba(255,0,255,0.05);
+            }
+            .firstLevel {
+                float: left;
                 height: 100%;
             }
-            .header:hover {
-                background-color: rgba(255,100,100,0.8)
+            .tableBox {
+                box-sizing: border-box;
+                border: 1px solid black;
             }
-            #contentTable td {
-                vertical-align: top;
+            .leftMid {
+                text-align: center;
             }
-            .column-sel, .row-sel {
-                color: #217346;
-                font-weight: bold;
-                background-color: rgba(255,255,0,0.3)
+            .leftTop, .leftMid, .leftBot, .mainTop, .mainBot {
+                overflow: auto;
+            }
+            .mainMid {
+                overflow: auto;
+            }
+            .dataTable {
+                border-collapse: collapse;  
+                table-layout: fixed;
+                outline:none;
+            }
+            .dataTable td {
+                padding-left: 2px;
+                overflow: hidden;
+                border-right: 1px solid lightgrey;
+                border-bottom: 1px solid lightgrey;
+            }
+            .unselectable {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+            }
+            .tableArea {
+                height: 100%;
+                width: 100%;
             }
         </style>
     </head>
     <body>
-        <div>
-            <div id="contentArea">
-                <table id="contentTable">
-                    <tbody>
-                        <tr id="header">
-                            <td id="corner" style="width: 2.75em; height: 1.45em;"></td>
-                            <td id="headers">
-                                <div id="columnHeaders" style="width:600px; height: 1.45em">
-                                    <div class="header column-nosel" style="width:63px; left: 0px">
-                                        <div class="header-elem">A</div>
-                                    </div>
-                                    <div class="header column-nosel" style="width:63px; left: 64px">
-                                        <div class="header-elem">B</div>
-                                    </div>
-                                    <div class="header column-sel" style="width:63px; left: 128px">
-                                        <div class="header-elem">C</div>
-                                    </div>
-                                    <div class="header column-nosel" style="width:63px; left: 192px">
-                                        <div class="header-elem">D</div>
-                                    </div>
-                                    <div class="header column-nosel" style="width:63px; left: 256px">
-                                        <div class="header-elem">E</div>
-                                    </div>
-                                    <div class="header column-nosel" style="width:63px; left: 320px">
-                                        <div class="header-elem">F</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr id="grid">
-                            <td>
-                                <div id="rowHeaders" style="height: 300px; width: 2.75em;">
-                                    <div class="header row-nosel" style="height:19px; top: 0px">
-                                        <div class="header-elem">1</div>
-                                    </div>
-                                    <div class="header row-sel" style="height:19px; top: 20px">
-                                        <div class="header-elem">2</div>
-                                    </div>
-                                    <div class="header row-sel" style="height:19px; top: 40px">
-                                        <div class="header-elem">3</div>
-                                    </div>
-                                    <div class="header row-nosel" style="height:19px; top: 60px">
-                                        <div class="header-elem">4</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div id="contentArea">
+            <!--
+                Text input parameters
+                left:   calculated + 1px
+                top:    calculated + 1px
+                height: calculated - 2px
+                width:  calculated - 1px
+            -->
+          <!--  <input type="text" id="cellEditor" class="editArea" style="left: 179px; top: 91px; height: 18px; width: 63px;" />-->
+            <!--
+                Selected cell parameters
+                left:   calculated
+                top:    calculated
+                height: calculated - 1px
+                width:  calculated - 1px
+            -->
+        <!--     <div id="cellSelector" style="left: 50px; top: 30px; height: 19px; width: 63px;"></div> -->
+            <div class="tableArea unselectable">
+                <!-- Left content (optional) -->
+                <div class="firstLevel leftContent" style="width: 10%;">
+                    <div class="tableBox leftTop" style="height: 20%;">
+                        <table class="dataTable" style="width: 80px;">
+                            <colgroup>
+                                <col style="width:80px;" />
+                            </colgroup>
+                            <tr style="height: 20px">
+                                <td>DATA</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tableBox leftMid" style="height: 60%;">
+                        <table class="dataTable" style="width: 30px;">
+                            <colgroup>
+                                <col style="width: 30px"/>
+                            </colgroup>
+                            <tbody>
+                                <tr style="height: 20px;">
+                                    <td>1</td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td>2</td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td>3</td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td>4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tableBox leftBot" style="height: 20%;"></div>
+                </div>
+
+                <!-- Main content -->
+                <div class="firstLevel mainContent" style="width: 90%;">
+                    <div class="tableBox mainTop" style="height: 20%;">
+                        <table class="dataTable" style="width:384px;">
+                            <colgroup>
+                                <col style="width: 64px" />
+                                <col style="width: 64px" />
+                                <col style="width: 64px" />
+                                <col style="width: 64px" />
+                                <col style="width: 64px" />
+                                <col style="width: 64px" />
+                            </colgroup>
+                            <tbody>
+                                <tr style="height: 20px;">
+                                    <td>A</td>
+                                    <td>B</td>
+                                    <td>C</td>
+                                    <td>D</td>
+                                    <td>E</td>
+                                    <td>F</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tableBox mainMid" style="height: 60%;">
+                        <table tabindex="0" class="dataTable" style="width: 384px;">
+                            <colgroup>
+                                <col style="width: 64px" />
+                                <col style="width: 64px" />
+                                <col style="width: 64px" />
+                                <col style="width: 64px" />
+                                <col style="width: 64px" />
+                                <col style="width: 64px" />
+                            </colgroup>
+                            <tbody>
+                                <tr style="height: 20px;">
+                                    <td>a</td>
+                                    <td>bbbbbbbbbbbbbb</td>
+                                    <td>c</td>
+                                    <td>d</td>
+                                    <td>e</td>
+                                    <td>f</td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td>g</td>
+                                    <td>h</td>
+                                    <td>i</td>
+                                    <td>j</td>
+                                    <td>k</td>
+                                    <td>l</td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td>m</td>
+                                    <td>n</td>
+                                    <td>o</td>
+                                    <td>p</td>
+                                    <td>q</td>
+                                    <td>r</td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td>s</td>
+                                    <td>t</td>
+                                    <td>u</td>
+                                    <td>v</td>
+                                    <td>w</td>
+                                    <td>x</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tableBox mainBot" style="height: 20%;"></div>
+                </div>
+            </div>    
         </div>
+        <script type="text/javascript">
+          /*  var selector = $("#cellSelector");
+            var editor = $("#cellEditor");
+            var dataTable = $("#sheetContent");
+            var mainTable = $("#contentTable");
+            
+            var leftHeaders = 50,
+                topHeaders = 30;
+            
+            var currentCell = {
+                row: 0,
+                column: 0,
+                dom: $(dataTable[0].rows[0].cells[0])
+            };
+            
+            var numrows = 4,
+                numcols = 6;
+            
+            var rows = Array(numrows),
+                columns = Array(numcols);
+            
+            rows[0] = 0;
+            columns[0] = 0;
+            
+            for(var i = 1; i < 4; i++) {
+                rows[i] = rows[i-1]+20;
+            }
+            for(var i = 1; i < 6; i++) {
+                columns[i] = columns[i-1]+64;
+            }
+            
+            mainTable.on("keydown", function(e) {
+                var code = e.keyCode;
+                if(e.altKey || e.ctrlKey)
+                    return;
+                if((code > 13 && code < 37) || (code === 45) || (code > 90 && code < 96) || (code > 111 && code < 186)) // http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
+                    return;
+                switch(code) {
+                    case 46: // Delete
+                        currentCell.dom.empty();
+                        break;
+                    case 37: // Left
+                    case 38: // Up
+                    case 39: // Right
+                    case 40: // Down
+                    case 13: // Return
+                    case 9: // Tab
+                        navigationKey(code);
+                        break;
+                    default:
+                        showEditor();
+                        break;
+                }
+                if(code === 9)
+                    e.preventDefault();
+                e.stopPropagation();
+            });
+            
+            dataTable.on("click", "td", function(e){
+                var row = e.currentTarget.parentElement.rowIndex;
+                var col = e.currentTarget.cellIndex;
+                hideEditor(true);
+                selectCell(row, col);
+            });
+            
+            function navigationKey(key) {
+                switch(key) {
+                    case 40:
+                    case 13:
+                        return selectCell(currentCell.row+1, currentCell.column);
+                    case 39:
+                        return selectCell(currentCell.row, currentCell.column+1);
+                    case 37:
+                        return selectCell(currentCell.row, currentCell.column-1);
+                    case 38:
+                        return selectCell(currentCell.row-1, currentCell.column);
+                    case 9:
+                        return selectNextCell();
+                }
+            }
+            
+            function selectNextCell() {
+                if(currentCell.column < numcols-1)
+                    return selectCell(currentCell.row, currentCell.column+1);
+                else
+                    return selectCell(currentCell.row+1, 0);
+            }
+            
+            function selectCell(row, column) {
+                if(row >= numrows || row < 0 || column >= numcols || column < 0)
+                    return;
+                currentCell = {
+                    row: row,
+                    column: column,
+                    dom: $(dataTable[0].rows[row].cells[column])
+                };
+                selector.animate({
+                    top: (topHeaders+rows[row])+"px",
+                    left: (leftHeaders+columns[column])+"px"
+                }, 50);
+            }
+            
+            editor.on("blur",function(){
+                hideEditor(true);
+             });
+             
+             var editorVisible = false;
+             function hideEditor(save) {
+                if(!editorVisible)
+                    return;
+                
+                if(save) {
+                    currentCell.dom.html(editor.val());
+                }
+                
+                editorVisible = false;
+                editor.val("");
+                editor.hide();
+                dataTable.focus();
+             }
+             
+             editor.on("keydown", function(e) {
+                var code = e.keyCode;
+                switch(code) {
+                    case 27:
+                        hideEditor(false);
+                        break;
+                    case 13:
+                        hideEditor(true);
+                        selectCell(currentCell.row+1, currentCell.column);
+                        break;
+                    case 9:
+                        hideEditor(true);
+                        selectNextCell();
+                        break;
+                }
+                if(code === 9)
+                    e.preventDefault();
+             });
+            
+            function showEditor() {
+                var row = currentCell.row,
+                    col = currentCell.column;
+                editor.css({
+                    top: topHeaders+rows[row]+1,
+                    left: leftHeaders+columns[col]+1,
+                    height: rows[row+1]-rows[row]-2,
+                    width: columns[col+1]-columns[col]-1
+                });
+
+                editorVisible = true;
+                editor.show();
+                editor.focus();
+                
+            }
+            
+            dataTable.focus();
+            */
+        </script>
     </body>
 </html>
