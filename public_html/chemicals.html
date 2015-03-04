@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chemical table</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/libs/underscore.js/underscore.js"></script>
+        <script src="js/libs/jquery/jquery.js"></script>
+        <script src="js/libs/jqueryui/jquery-ui.js"></script>
+        <link rel="stylesheet" href="js/libs/jqueryui/css/jquery.ui.all.css" />
+        <style>
+            #chemtable {
+                table-layout: fixed;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <table id="chemtable">
+                <thead>
+                    <tr>
+                        <th style="width:30px;"></th>
+                        <th>Search</th>
+                        <th>Name</th>
+                        <th>MF</th>
+                        <th>MW</th>
+                        <th>density</th>
+                        <th>purity</th>
+                        <th>ml</th>
+                        <th>g</th>
+                        <th>mmoles</th>
+                        <th>equiv.</th>
+                    </tr>
+                </thead>
+                <tbody id="chemtablebody">
+                </tbody>
+            </table>
+        </div>
+        
+        <script>
+            
+            var chemtable = $("#chemtablebody");
+            
+            var chemRows = [];
+            
+            function addRow(index) {
+                var row = $("<tr>").append('<td><span onclick="addRow(this);">+</span> <span onclick="removeRow();">-</span></td>').appendTo(chemtable);
+                row.append($("<td>").append(autocomplete(row))); // search field
+                row.append('<td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td>');
+                if(index > -1) {
+                    chemRows.splice(index, 0, row);
+                }
+                else {
+                    chemRows.push(row);
+                }
+            }
+        
+            function removeRow(row) {
+                
+            }
+            
+            function fillRowWith(value, row) {
+                console.log(row, value)
+            }
+            
+            function autocomplete(row) {
+                var input = $('<input type="text">');
+                input.autocomplete({
+                    source: function(request, response){
+                        $.getJSON("http://www.chemexper.com/search/reference/json/quick/"+request.term).then(function(data){
+                            var results = data.entry;
+                            if(!results) {
+                                return response([]);
+                            }
+                            var result = [];
+                            for(var i = 0, ii = results.length; i < ii; i++) {
+                                result[i] = {
+                                    label: results[i].iupac[0].value,
+                                    value: results[i]
+                                };
+                            }
+                            response(result);
+                        },function(){
+                            response([]);
+                        });
+                    },
+                    minLength: 3,
+                    /*_renderItem: function(ul, item) {
+                        return $("<li>").appendTo( ul );
+                    },*/
+                    select: function(event, ui) {
+                        event.preventDefault();
+                        fillRowWith(ui.item.value, row);
+                        input.val("");
+                    },
+                    focus: function(event, ui) {
+                        event.preventDefault();
+                    }
+                });
+                return input;
+            }
+            
+            addRow();
+            
+        </script>
+    </body>
+</html>
